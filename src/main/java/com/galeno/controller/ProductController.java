@@ -48,11 +48,15 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> read(@PathVariable(name = "id") Long id){
-        return okResponse(getServices().getById(id));
+        return okResponse(getService().getById(id));
     }
 
     private ResponseEntity<List<ProductDTO>> okResponse(List<Product> src){
         return ResponseEntity.ok(src.stream().map(this::toDTO).collect(Collectors.toList()));
+    }
+    
+    private ResponseEntity<ProductDTO> okResponse(Product src) {
+        return ResponseEntity.ok(this.toDTO(src));
     }
 
     private ResponseEntity<Page<ProductListingDTO>> okListingResponse(Page<Product> src){
