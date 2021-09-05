@@ -15,15 +15,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @RestController
 @RequestMapping("product")
 @Getter
 public class ProductController {
 
     @Autowired
-    private ProductService service;
-    private ModelMapper modelMapper;
+    private ProductService productService;
+    private final ModelMapper modelMapper;
 
     public ProductController(ModelMapper mapper){
         this.modelMapper = mapper;
@@ -31,7 +30,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<ProductDTO>> read(){
-        return okResponse(getService().findAll());
+        return okResponse(getProductService().findAll());
     }
 
     @GetMapping("/page")
@@ -43,12 +42,12 @@ public class ProductController {
         @RequestParam(required = false) String[] with
     )
     {
-        return okListingResponse(getService().findPage(page, pageSize,filterCriteria, filterValue, with));
+        return okListingResponse(getProductService().findPage(page, pageSize,filterCriteria, filterValue, with));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> read(@PathVariable(name = "id") Long id){
-        return okResponse(getService().getById(id));
+        return okResponse(getProductService().getById(id));
     }
 
     private ResponseEntity<List<ProductDTO>> okResponse(List<Product> src){

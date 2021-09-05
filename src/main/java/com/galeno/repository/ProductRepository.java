@@ -5,8 +5,9 @@ import com.cosium.spring.data.jpa.entity.graph.repository.EntityGraphJpaReposito
 import com.galeno.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 
-
+@Repository
 public interface ProductRepository extends EntityGraphJpaRepository<Product, Long> {
 
     Page<Product> findAllByNameContaining(String name, Pageable pageable, EntityGraph entityGraph);

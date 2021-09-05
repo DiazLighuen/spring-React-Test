@@ -23,7 +23,7 @@ import java.util.Optional;
 @Getter
 public class ProductService {
     @Autowired
-    private ProductRepository repository;
+    private ProductRepository productRepository;
 
     public EntityGraph generateEntityGraph(String... paths) {
         return paths == null || paths.length == 0 ? null : EntityGraphUtils.fromAttributePaths(paths);
@@ -31,17 +31,17 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public List<Product> findAll(String... with) {
-        return new ArrayList<>((Collection<? extends Product>) getRepository().findAll(generateEntityGraph(with)));
+        return new ArrayList<>((Collection<? extends Product>) getProductRepository().findAll(generateEntityGraph(with)));
     }
 
     @Transactional(readOnly = true)
     public Page<Product> findPage(int page, int pageSize, FilterCriteria filterCriteria, String filterValue, String... with) {
         if (filterCriteria == null){
-            return getRepository().findAll(PageRequest.of(page, pageSize), generateEntityGraph(with));
+            return getProductRepository().findAll(PageRequest.of(page, pageSize), generateEntityGraph(with));
         }
         else {
             if (filterCriteria == FilterCriteria.NAME){
-                return getRepository().findAllByNameContaining(filterValue, PageRequest.of(page,pageSize), generateEntityGraph(with));
+                return getProductRepository().findAllByNameContaining(filterValue, PageRequest.of(page,pageSize), generateEntityGraph(with));
             }
         }
         throw new InvalidFilterCriteriaException();
@@ -49,7 +49,7 @@ public class ProductService {
 
     @Transactional
     public Product persist(Product product) {
-        return getRepository().save(product);
+        return getProductRepository().save(product);
     }
 
     @Transactional
@@ -59,6 +59,6 @@ public class ProductService {
 
     @Transactional
     public Optional<Product> findById(Long id, String... with) {
-        return getRepository().findById(id,generateEntityGraph(with));
+        return getProductRepository().findById(id,generateEntityGraph(with));
     }
 }

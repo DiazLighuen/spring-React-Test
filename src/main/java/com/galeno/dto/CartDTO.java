@@ -4,10 +4,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProductListingDTO {
+public class CartDTO {
     private Long id;
-    private String name;
+    private List<ProductDTO> productDTOList;
+    private Double total;
+    private Boolean paid;
 }
