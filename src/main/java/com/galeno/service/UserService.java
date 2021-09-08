@@ -2,7 +2,10 @@ package com.galeno.service;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
+import com.galeno.dto.DeleteFromCartDTO;
+import com.galeno.dto.UserDTO;
 import com.galeno.exception.InvalidFilterCriteriaException;
+import com.galeno.model.Cart;
 import com.galeno.model.FilterCriteria;
 import com.galeno.model.Product;
 import com.galeno.model.User;
@@ -16,16 +19,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Getter
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CartService cartService;
+
+    public void toggleVIP(UserDTO userDTO){
+        User user = getById(userDTO.getId());
+        user.setUserVip(!user.getUserVip());
+        userRepository.save(user);
+    }
 
     public EntityGraph generateEntityGraph(String... paths) {
         return paths == null || paths.length == 0 ? null : EntityGraphUtils.fromAttributePaths(paths);

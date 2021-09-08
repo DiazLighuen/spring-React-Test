@@ -23,7 +23,7 @@ public class User {
     private String password;
     private Boolean userVip;
     @OneToOne
-    private Cart activeCart = null;
+    private Cart cart;
     @OneToMany
     private Set<Cart> carts = new HashSet<>();
 }

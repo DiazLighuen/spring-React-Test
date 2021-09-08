@@ -1,12 +1,8 @@
 package com.galeno.controller;
 
-import com.galeno.dto.AddToCartDTO;
-import com.galeno.dto.CartDTO;
+import com.galeno.dto.*;
 
-import com.galeno.dto.ProductListingDTO;
 import com.galeno.model.Cart;
-import com.galeno.model.Product;
-import com.galeno.model.User;
 import com.galeno.service.CartService;
 import com.galeno.service.ProductService;
 import com.galeno.service.UserService;
@@ -18,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,10 +42,20 @@ public class CartController {
 
     @PostMapping("/add")
     public ResponseEntity addToCart(@RequestBody AddToCartDTO addToCartDTO){
-        User user = getUserService().getById(addToCartDTO.getUserId());
-        Product product = getProductService().getById(addToCartDTO.getProductId());
-        getCartService().addToCart(product,user);
+        getCartService().addToCart(addToCartDTO);
         return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity deleteFromCart(@RequestBody DeleteFromCartDTO deleteFromCartDTO){
+        getCartService().deleteFromCart(deleteFromCartDTO);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("/deleteAll")
+    public ResponseEntity deleteAll(@RequestBody UserDTO userDTO){
+        getCartService().deleteAllItemsFromCart(userDTO);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -67,7 +72,7 @@ public class CartController {
         return ResponseEntity.ok(this.toDTO(src));
     }
 
-    private ResponseEntity<Page<ProductListingDTO>> okListingResponse(Page<Cart> src){
+    private ResponseEntity<Page<CartDTO>> okListingResponse(Page<Cart> src){
         return ResponseEntity.ok(src.map(this::toListingDTO));
     }
 
@@ -75,7 +80,7 @@ public class CartController {
         return getModelMapper().map(src, CartDTO.class);
     }
 
-    private ProductListingDTO toListingDTO(Cart src) {
-        return getModelMapper().map(src, ProductListingDTO.class);
+    private CartDTO toListingDTO(Cart src) {
+        return getModelMapper().map(src, CartDTO.class);
     }
 }
