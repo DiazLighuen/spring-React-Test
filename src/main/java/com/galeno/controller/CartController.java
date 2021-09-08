@@ -1,20 +1,24 @@
 package com.galeno.controller;
 
+import com.galeno.dto.AddToCartDTO;
 import com.galeno.dto.CartDTO;
 
 import com.galeno.dto.ProductListingDTO;
 import com.galeno.model.Cart;
+import com.galeno.model.Product;
+import com.galeno.model.User;
 import com.galeno.service.CartService;
+import com.galeno.service.ProductService;
+import com.galeno.service.UserService;
 import lombok.Getter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +29,11 @@ public class CartController {
 
     @Autowired
     private CartService cartService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ProductService productService;
+
     private final ModelMapper modelMapper;
 
     public CartController(ModelMapper mapper){
@@ -36,10 +45,19 @@ public class CartController {
         return okResponse(getCartService().findAll());
     }
 
+    @PostMapping("/add")
+    public ResponseEntity addToCart(@RequestBody AddToCartDTO addToCartDTO){
+        User user = getUserService().getById(addToCartDTO.getUserId());
+        Product product = getProductService().getById(addToCartDTO.getProductId());
+        getCartService().addToCart(product,user);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<CartDTO> read(@PathVariable(name = "id") Long id){
         return okResponse(getCartService().getById(id));
     }
+
 
     private ResponseEntity<List<CartDTO>> okResponse(List<Cart> src){
         return ResponseEntity.ok(src.stream().map(this::toDTO).collect(Collectors.toList()));

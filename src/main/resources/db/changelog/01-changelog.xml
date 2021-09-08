@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <changeSet id="1631044051131-1" author="Diaz">
+        <!-- Create tables -->
+        <sql>
+            create table cart (id bigint not null auto_increment, date datetime, paid bit, primary key (id)) engine=InnoDB;
+            create table cart_products (cart_id bigint not null, products_id bigint not null, primary key (cart_id, products_id)) engine=InnoDB;
+            create table product (id bigint not null auto_increment, description TEXT, name varchar(255), price double precision, primary key (id)) engine=InnoDB;
+            create table user (id bigint not null auto_increment, password varchar(255), user_vip bit, username varchar(255), active_cart_id bigint, primary key (id)) engine=InnoDB;
+            create table user_carts (user_id bigint not null, carts_id bigint not null, primary key (user_id, carts_id)) engine=InnoDB;
+            alter table user_carts add constraint UK_d5g1hf0ohhmlinefm7ncv8sxi unique (carts_id);
+            alter table cart_products add constraint FKhyhnx21758m3wmbi4ps96m0yw foreign key (products_id) references product (id);
+            alter table cart_products add constraint FKnlhjc091rdu9k5c8u9xwp280w foreign key (cart_id) references cart (id);
+            alter table user add constraint FK45gu02cquofgm1vourgkt7eim foreign key (active_cart_id) references cart (id);
+            alter table user_carts add constraint FK10yte9f4roxdnooc752ii4qdb foreign key (carts_id) references cart (id);
+            alter table user_carts add constraint FKdjf0emykmc53xuh33tbktkj14 foreign key (user_id) references user (id);
+        </sql>
+        <!--    Insert users -->
+        <insert tableName="User">
+            <column name="id"/>
+            <column name="username" value="lighuen"/>
+            <column name="password" value="p45w0rd"/>
+            <column name="user_vip" valueBoolean="true"/>
+        </insert>
+        <!--    Insert products-->
+        <insert tableName="Product">
+            <column name="id" autoIncrement="true"/>
+            <column name="name" value="Monitor gamer Gigabyte G27F led 27 pulgadas negro 100V/240V"/>
+            <column name="description"
+                    value="Disfrutá de todas las cualidades que el monitor Gigabyte G27F tiene para ofrecerte. Percibí las imágenes de una manera completamente diferente y complementá cualquier espacio ya sea en tu casa u oficina."/>
+            <column name="price" valueNumeric="58.650"/>
+        </insert>
+        <insert tableName="Product">
+            <column name="id" autoIncrement="true"/>
+            <column name="name" value="Sommier King La Cardeuse Native 400 200x200"/>
+            <column name="description"
+                    value="El Native 400 se produce con nuestro exclusivo sistema Bonell de resortes Bonell. Este sistema permite que los resortes trabajen en conjunto generando una sensación de suavidad y relajación al acostarse."/>
+            <column name="price" valueNumeric="77.929"/>
+        </insert>
+        <insert tableName="Product">
+            <column name="id" autoIncrement="true"/>
+            <column name="name" value="uego De Toalla Y Toallon Absorbente 100% Algodón Colores"/>
+            <column name="description" value="Set de Toalla y Toallon Fantasía Knut"/>
+            <column name="price" valueNumeric="1.025"/>
+        </insert>
+        <insert tableName="Product">
+            <column name="id" autoIncrement="true"/>
+            <column name="name" value="Smart Tv Led 40 Android Tv Rca And40y Wifi Android"/>
+            <column name="description" value="La tienda no incluyó una descripción del producto"/>
+            <column name="price" valueNumeric="34.299"/>
+        </insert>
+        <insert tableName="Product">
+            <column name="id" autoIncrement="true"/>
+            <column name="name" value="Coche Jogger Avanti Travel System 3 Ruedas Defender Huevito"/>
+            <column name="description" value="Travel Defender
+                Coche Jogger 3 ruedas con butaquita para el auto
+                Marca Avanti
+                Bolsillo porta objetos en la capota
+                Cinturón de seguridad de seguridad de 5 puntos con protectores acolchonados
+                Respaldo reclinable en múltiples posiciones
+                Canasto porta objetos (Soporta hasta 3kg)
+                Frenos en ruedas traseras
+                Traba en ruedas delanteras para llevarlas fijas o giratorias
+                Doble rueda frontal para mayor estabilidad
+                Bandeja delantera desmontable
+                Apoyapiés con 2 posiciones
+                Capota xxl con visor
+                Práctico sistema de plegado"/>
+            <column name="price" valueNumeric="15.999"/>
+        </insert>
+        <insert tableName="Product">
+            <column name="id" autoIncrement="true"/>
+            <column name="name" value="Pantuflas Chinelas Mujer Algodón Estampada Beso Solanas"/>
+            <column name="description" value="PANTUFLAS MUJER DE INVIERNO
+                Marca: SOLANAS
+                Numeración: 36 al 41"/>
+            <column name="price" valueNumeric="1.350"/>
+        </insert>
+        <insert tableName="Product">
+            <column name="id" autoIncrement="true"/>
+            <column name="name" value="Cortina Baño Diseño Decoracion Tela Linea Animalitos"/>
+            <column name="description" value="- Cortina de baño en tela poliester, de 180cm de ancho x 180cm de alto, con ojales
+                sufilados, lavable en lavarropas, se puede planchar.
+                - Protector antihongos de polietileno, blanco, antiadherente e impermeable. Medida 180cm
+                x 180cm."/>
+            <column name="price" valueNumeric="3.022"/>
+        </insert>
+        <insert tableName="Product">
+            <column name="id" autoIncrement="true"/>
+            <column name="name" value="Juguera eléctrica Atma EX8245N acero inoxidable 220V con accesorios"/>
+            <column name="description" value="¿Hay algo mejor que un jugo fresco en cualquier momento del día? Tus frutas y verduras preferidas aportan las vitaminas y minerales que tu cuerpo necesita, y con la juguera Atma podrás hacerlo muy fácil."/>
+            <column name="price" valueNumeric="11.999"/>
+        </insert>
+        <insert tableName="Product">
+            <column name="id" autoIncrement="true"/>
+            <column name="name" value="Microondas Grill Atma Easy Cook MD1728GN blanco 28L 220V"/>
+            <column name="description" value="El microondas se ha convertido en un artefacto imprescindible en nuestros hogares. Si todavía no elegiste alguno no dudes más. Con la línea Easy Cook tendrás todo lo que soñaste en un solo lugar. Simpleza, diseño, calidad y tecnología que te acompañará en tus almuerzos y cenas."/>
+            <column name="price" valueNumeric="24.799"/>
+        </insert>
+        <insert tableName="Product">
+            <column name="id" autoIncrement="true"/>
+            <column name="name" value="Xiaomi Mi Smart Band 6"/>
+            <column name="description" value="Con 10 años de trayectoria, Xiaomi se posiciona como uno de los líderes indiscutidos en el mercado de los smartwatches. Sus productos se destacan por la calidad, el diseño sencillo y muy buenas prestaciones. La Mi Band tiene todo lo necesario para acompañarte en tu rutina."/>
+            <column name="price" valueNumeric="4.999"/>
+        </insert>
+        <insert tableName="Product">
+            <column name="id" autoIncrement="true"/>
+            <column name="name" value="Termo Bala Acero Inox Doble Capa Termica 1 Litro Con Estuche"/>
+            <column name="description" value="Combina materiales resistentes y duraderos que potencian la usabilidad de sus productos, bien sea de forma cotidiana, camping o en cualquier contexto."/>
+            <column name="price" valueNumeric="1.499"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

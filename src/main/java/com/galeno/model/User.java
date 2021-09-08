@@ -5,7 +5,8 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -18,9 +19,11 @@ public class User {
             strategy = "native"
     )
     private Long id;
-    @Column(nullable = false, unique = true)
     private String username;
     private String password;
     private Boolean userVip;
-    private List<Cart> carts;
+    @OneToOne
+    private Cart activeCart = null;
+    @OneToMany
+    private Set<Cart> carts = new HashSet<>();
 }
