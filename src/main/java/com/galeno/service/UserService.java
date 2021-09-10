@@ -2,15 +2,13 @@ package com.galeno.service;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
-import com.galeno.dto.DeleteFromCartDTO;
 import com.galeno.dto.UserDTO;
 import com.galeno.exception.InvalidFilterCriteriaException;
 import com.galeno.model.Cart;
 import com.galeno.model.FilterCriteria;
-import com.galeno.model.Product;
 import com.galeno.model.User;
-import com.galeno.repository.ProductRepository;
 import com.galeno.repository.UserRepository;
+import com.galeno.utils.Helper;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,10 +28,68 @@ public class UserService {
     @Autowired
     private CartService cartService;
 
+    @Autowired
+    private Helper helper;
+
     public void toggleVIP(UserDTO userDTO){
         User user = getById(userDTO.getId());
         user.setUserVip(!user.getUserVip());
         userRepository.save(user);
+    }
+
+    public void saveCartPaid(User user){
+        user.getCarts().add(user.getCart());
+        user.setCart(getCartService().createNewCart(user));
+        this.persist(user);
+    }
+
+    public void deleteCart(UserDTO userDTO){
+        User user = getById(userDTO.getId());
+        Cart cart = user.getCart();
+        if(cart != null){
+            getCartService().deleteCart(cart);
+        }
+        user.setCart(null);
+        this.persist(user);
+
+    }
+
+    public void deleteCart(User user){
+        Cart cart = user.getCart();
+        if(cart != null){
+            getCartService().deleteCart(cart);
+        }
+        user.setCart(null);
+        this.persist(user);
+
+    }
+
+    public Boolean payCart(UserDTO userDTO) {
+        User user = getById(userDTO.getId());
+        Cart cart = user.getCart();
+
+        if (getHelper().isToday(cart.getDate())) {
+            this.checkVIP(user);
+            cart.setPaid(true);
+            getCartService().persist(cart);
+            this.saveCartPaid(user);
+            return true;
+        }
+        else {
+            this.deleteCart(user);
+            getCartService().deleteCart(cart);
+            return false;
+        }
+    }
+
+    public void setCart(User user, Cart cart){
+        user.setCart(cart);
+        this.persist(user);
+    }
+
+    private void checkVIP(User user){
+        user.setUserVip(user.getCart().getTotal() > 10000 & getHelper().isSpecialMonth());
+        this.persist(user);
     }
 
     public EntityGraph generateEntityGraph(String... paths) {

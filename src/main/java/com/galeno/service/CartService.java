@@ -2,9 +2,7 @@ package com.galeno.service;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
-import com.galeno.dto.AddToCartDTO;
-import com.galeno.dto.DeleteFromCartDTO;
-import com.galeno.dto.UserDTO;
+import com.galeno.dto.*;
 import com.galeno.model.*;
 import com.galeno.repository.CartRepository;
 import com.galeno.utils.Helper;
@@ -14,10 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 @Service
 @Getter
@@ -35,56 +32,73 @@ public class CartService {
     @Autowired
     private CartRepository cartRepository;
 
-    public void addToCart(AddToCartDTO addToCartDTO){
+    public void addToCart(AddToCartDTO addToCartDTO) {
         User user = getUserService().getById(addToCartDTO.getUserId());
         Product product = getProductService().getById(addToCartDTO.getProductId());
         Cart cart = user.getCart();
-        if(cart==null){
-            cart = this.createNewCart();
-            user.setCart(cart);
+        if (cart == null) {
+            cart = this.createNewCart(user);
+            getUserService().setCart(user,cart);
+            cart = user.getCart();
         }
-        cart.addProduct(product);
-        cart.calculateTotal(user);
-        persist(cart);
+        if (getHelper().isToday(cart.getDate())) {
+            cart.addProduct(product);
+            cart.calculateTotal(user);
+            persist(cart);
+        }
+        else {
+            getUserService().deleteCart(user);
+            this.deleteCart(cart);
+        }
     }
 
-    public void deleteFromCart(DeleteFromCartDTO deleteFromCartDTO){
+    public void deleteFromCart(DeleteFromCartDTO deleteFromCartDTO) {
         User user = getUserService().getById(deleteFromCartDTO.getUserId());
         Product product = getProductService().getById(deleteFromCartDTO.getProductId());
         Cart cart = user.getCart();
-        if(cart!=null) {
-            cart.getProducts().remove(product);
-            cart.calculateTotal(user);
-            persist(cart);
+        if (cart != null) {
+            if (getHelper().isToday(cart.getDate())) {
+                cart.getProducts().remove(product);
+                cart.calculateTotal(user);
+                persist(cart);
+            }
+            else {
+                getUserService().deleteCart(user);
+                this.deleteCart(cart);
+            }
         }
     }
 
-    public void deleteAllItemsFromCart(UserDTO userDTO){
-        User user = getUserService().getById(userDTO.getId());
-        Cart cart = user.getCart();
-        if(cart!=null) {
-            cart.getProducts().clear();
-            cart.calculateTotal(user);
-            persist(cart);
+    public void deleteAllItemsFromCart(CartListDTO cartListDTO) {
+        Cart cart = this.getById(cartListDTO.getId());
+        if (cart != null) {
+            if (getHelper().isToday(cart.getDate())) {
+                cart.getProducts().clear();
+                persist(cart);
+            }
         }
     }
 
-    public Boolean payCart(UserDTO userDTO){
-        Cart cart = getUserService().getById(userDTO.getId()).getCart();
-        cart.setPaid(true);
-        this.persist(cart);
-        return true;
-    }
-
-    public Cart createNewCart(){
+    public Cart createNewCart(User user) {
         Cart cart;
-        if(helper.isPromotionalDate()){
-            cart = new PromoCart();
-        }
-        else {
-            cart = new SimpleCart();
+        if (helper.isPromotionalDate()) {
+            cart = new PromoCart(user);
+        } else {
+            cart = new SimpleCart(user);
         }
         return cart;
+    }
+
+    public void deleteCart(Cart cart) {
+        cartRepository.delete(cart);
+    }
+
+    @Transactional
+    public void deleteCart(CartListDTO cartListDTO){
+        Cart cart = this.getById(cartListDTO.getId());
+        this.deleteAllItemsFromCart(cartListDTO);
+        getUserService().deleteCart(cart.getUser());
+        cartRepository.delete(cart);
     }
 
     public EntityGraph generateEntityGraph(String... paths) {
@@ -102,12 +116,12 @@ public class CartService {
     }
 
     @Transactional
-    public Cart getById(Long id, String... with){
+    public Cart getById(Long id, String... with) {
         return findById(id, with).orElseThrow(EntityNotFoundException::new);
     }
 
     @Transactional
     public Optional<Cart> findById(Long id, String... with) {
-        return getCartRepository().findById(id,generateEntityGraph(with));
+        return getCartRepository().findById(id, generateEntityGraph(with));
     }
 }

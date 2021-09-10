@@ -49,9 +49,9 @@ public class UserController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("/pay")
+    @PostMapping("/payCart")
     public ResponseEntity payCart(@RequestBody UserDTO userDTO){
-        HttpStatus response = getCartService().payCart(userDTO)?HttpStatus.OK:HttpStatus.CONFLICT;
+        HttpStatus response = getUserService().payCart(userDTO)?HttpStatus.OK:HttpStatus.CONFLICT;
         return new ResponseEntity(response);
     }
 

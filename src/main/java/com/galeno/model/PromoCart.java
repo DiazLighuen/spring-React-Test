@@ -4,6 +4,14 @@ import javax.persistence.Entity;
 
 @Entity
 public class PromoCart extends Cart{
+    public PromoCart() {
+        super();
+    }
+
+    public PromoCart(User user) {
+        super(user);
+    }
+
     public void calculateTotal(User user) {
         int size = this.getProducts().size();
         double total = this.getProducts().stream().map(Product::getPrice).reduce(0.0,Double::sum);

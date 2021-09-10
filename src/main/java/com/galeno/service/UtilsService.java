@@ -18,24 +18,34 @@ public class UtilsService {
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public void begginDate(String date){
-        if(isValid(date)){
+    public void setBegginDate(String date) {
+        if (isValid(date)) {
             helper.setBegginDateString(date);
         }
     }
 
-    public void endDate(String date){
-        if(isValid(date)){
+    public void setEndDate(String date) {
+        if (isValid(date)) {
             helper.setEndDateString(date);
         }
     }
 
-    public String getBegginDate(){
+    public void setSpecialMonth(String date) {
+        if (isValid(date)) {
+            helper.setSpecialMonthString(date);
+        }
+    }
+
+    public String getBegginDate() {
         return getHelper().getBegginDateString();
     }
 
-    public String getEndDate(){
+    public String getEndDate() {
         return getHelper().getEndDateString();
+    }
+
+    public String getSpecialMonth() {
+        return getHelper().getSpecialMonthString();
     }
 
     private boolean isValid(String dateStr) {

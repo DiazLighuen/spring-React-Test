@@ -5,9 +5,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Setter
@@ -21,24 +19,23 @@ public abstract class Cart {
     )
     private Long id;
     private Date date;
-    @ManyToMany
-    private Set<Product> products;
+    @ManyToMany(cascade=CascadeType.ALL)
+    private List<Product> products;
     private Boolean paid;
     private Double total;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public Cart(){
-        this.date = new Date();
-        this.products = new HashSet<Product>();
-        this.paid = false;
-        this.total = 0.0;
+    public Cart() {
     }
 
-    public Cart(Product product) {
+    public Cart(User user){
         this.date = new Date();
-        this.products = new HashSet<Product>();
-        this.products.add(product);
+        this.products = new ArrayList<Product>();
         this.paid = false;
         this.total = 0.0;
+        this.user = user;
     }
 
     public void addProduct(Product product){

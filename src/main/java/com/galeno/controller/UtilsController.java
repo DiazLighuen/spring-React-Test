@@ -1,7 +1,5 @@
 package com.galeno.controller;
 
-import com.galeno.dto.UserDTO;
-import com.galeno.model.User;
 import com.galeno.service.UtilsService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +16,20 @@ public class UtilsController {
     private UtilsService utilsService;
 
     @PostMapping("/begginDate")
-    public ResponseEntity begginDate(@RequestBody String date){
-        getUtilsService().begginDate(date);
+    public ResponseEntity setBegginDate(@RequestBody String date){
+        getUtilsService().setBegginDate(date);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("/endDate")
-    public ResponseEntity endDate(@RequestBody String date){
-        getUtilsService().endDate(date);
+    public ResponseEntity setEndDate(@RequestBody String date){
+        getUtilsService().setEndDate(date);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("/specialMonth")
+    public ResponseEntity SpecialMonth(@RequestBody String date){
+        getUtilsService().setSpecialMonth(date);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -37,6 +41,11 @@ public class UtilsController {
     @GetMapping("/endDate")
     public ResponseEntity<String> readEnd(){
         return okResponse(getUtilsService().getEndDate());
+    }
+
+    @GetMapping("/specialMonth")
+    public ResponseEntity<String> readSpecialMonth(){
+        return okResponse(getUtilsService().getSpecialMonth());
     }
 
     private ResponseEntity<String> okResponse(String src) {

@@ -22,8 +22,8 @@ public class User {
     private String username;
     private String password;
     private Boolean userVip;
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL)
     private Cart cart;
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private Set<Cart> carts = new HashSet<>();
 }

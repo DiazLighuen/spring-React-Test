@@ -1,4 +1,3 @@
-
 create table cart (dtype varchar(31) not null, id bigint not null auto_increment, date datetime, paid bit, total double precision, primary key (id)) engine=InnoDB
 create table cart_products (cart_id bigint not null, products_id bigint not null, primary key (cart_id, products_id)) engine=InnoDB
 create table product (id bigint not null auto_increment, description TEXT, name varchar(255), price double precision, primary key (id)) engine=InnoDB

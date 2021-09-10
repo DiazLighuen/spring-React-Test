@@ -46,15 +46,21 @@ public class CartController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/deleteFromCart")
     public ResponseEntity deleteFromCart(@RequestBody DeleteFromCartDTO deleteFromCartDTO){
         getCartService().deleteFromCart(deleteFromCartDTO);
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @PostMapping("/deleteCart")
+    public ResponseEntity deleteCart(@RequestBody CartListDTO cartListDTO) {
+        getCartService().deleteCart(cartListDTO);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @PostMapping("/deleteAll")
-    public ResponseEntity deleteAll(@RequestBody UserDTO userDTO){
-        getCartService().deleteAllItemsFromCart(userDTO);
+    public ResponseEntity deleteAll(@RequestBody CartListDTO cartListDTO){
+        getCartService().deleteAllItemsFromCart(cartListDTO);
         return new ResponseEntity(HttpStatus.OK);
     }
 
