@@ -1,0 +1,398 @@
+{
+	"info": {
+		"_postman_id": "1e318c6a-a217-4047-8b6d-55ba12be47c3",
+		"name": "springboot test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "show products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/product",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add product to cart",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"productId\": 3,\n    \"userId\": 1\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/cart/add",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cart",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete product from cart",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"productId\": 2,\n    \"userId\": 1\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/cart/deleteFromCart",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cart",
+						"deleteFromCart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete all products from cart",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/cart/deleteAll/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cart",
+						"deleteAll",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "show cart",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/cart/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cart",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteCart",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 2,\n    \"paid\":false\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/cart/deleteCart",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cart",
+						"deleteCart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "toggleVIP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"username\": \"lighuen\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/user/toggleVIP",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"toggleVIP"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "begginDateShow",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/utils/begginDate",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"utils",
+						"begginDate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "begginDateSet",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "09-09-2021"
+				},
+				"url": {
+					"raw": "localhost:8080/utils/begginDate",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"utils",
+						"begginDate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "payCart",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"1\",\n\t\"username\":\"lighuen\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/user/payCart",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user",
+						"payCart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "showSpecialMonth",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/utils/specialMonth",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"utils",
+						"specialMonth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "setSpecialMonth",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "01-09-2021"
+				},
+				"url": {
+					"raw": "localhost:8080/utils/specialMonth",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"utils",
+						"specialMonth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "myCart",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/cart/getCart/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cart",
+						"getCart",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getCarts from user",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/cart/getCarts/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cart",
+						"getCarts",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
