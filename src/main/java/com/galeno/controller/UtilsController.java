@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("utils")
 @Getter
+@CrossOrigin(origins = "*")
 public class UtilsController {
 
     @Autowired

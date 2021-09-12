@@ -5,8 +5,8 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Setter
@@ -25,5 +25,14 @@ public class User {
     @OneToOne(cascade=CascadeType.ALL)
     private Cart cart;
     @OneToMany(cascade=CascadeType.ALL)
-    private Set<Cart> carts = new HashSet<>();
+    private List<Cart> carts = new ArrayList<>();
+
+    public User(Long id, String username, String password, Boolean userVip, Cart cart, List<Cart> carts) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.userVip = userVip;
+        this.cart = cart;
+        this.carts = carts;
+    }
 }

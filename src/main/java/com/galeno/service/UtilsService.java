@@ -45,7 +45,7 @@ public class UtilsService {
     }
 
     public String getSpecialMonth() {
-        return getHelper().getSpecialMonthString();
+        return "{\"date\": \""+getHelper().getSpecialMonthString()+ "\"}";
     }
 
     private boolean isValid(String dateStr) {

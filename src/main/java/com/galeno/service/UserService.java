@@ -2,6 +2,7 @@ package com.galeno.service;
 
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraph;
 import com.cosium.spring.data.jpa.entity.graph.domain.EntityGraphUtils;
+import com.galeno.dto.CartDTO;
 import com.galeno.dto.UserDTO;
 import com.galeno.exception.InvalidFilterCriteriaException;
 import com.galeno.model.Cart;
@@ -70,6 +71,7 @@ public class UserService {
 
         if (getHelper().isToday(cart.getDate())) {
             this.checkVIP(user);
+            cart.setPurchaseDate(new Date());
             cart.setPaid(true);
             getCartService().persist(cart);
             this.saveCartPaid(user);

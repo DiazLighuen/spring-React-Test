@@ -2,6 +2,7 @@ package com.galeno.utils;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -16,11 +17,17 @@ import java.util.Date;
 public class Helper {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    private String begginDateString = "01-11-2021";
-    private String endDateString = "01-12-2021";
+
+    @Value( "${beggin.date.string}" )
+    private String begginDateString;
+
+    @Value( "${end.date.string}" )
+    private String endDateString ;
 
     private static final DateTimeFormatter formatterMonth = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    private String specialMonthString = "01-10-2021";
+
+    @Value( "${special.month}" )
+    private String specialMonthString;
 
     public Boolean isPromotionalDate(){
         LocalDate begginDate = LocalDate.parse(begginDateString,formatter);

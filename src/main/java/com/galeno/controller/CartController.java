@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("cart")
 @Getter
+@CrossOrigin(origins = "*")
 public class CartController {
 
     @Autowired
@@ -40,6 +41,11 @@ public class CartController {
         return okResponse(getCartService().findAll());
     }
 
+    @GetMapping("/getCarts/{id}")
+    public ResponseEntity<List<CartDTO>> getCarts(@PathVariable(name = "id") Long id){
+        return okResponse(getCartService().getCartsFromUser(id));
+    }
+
     @PostMapping("/add")
     public ResponseEntity addToCart(@RequestBody AddToCartDTO addToCartDTO){
         getCartService().addToCart(addToCartDTO);
@@ -58,9 +64,9 @@ public class CartController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @PostMapping("/deleteAll")
-    public ResponseEntity deleteAll(@RequestBody CartListDTO cartListDTO){
-        getCartService().deleteAllItemsFromCart(cartListDTO);
+    @DeleteMapping("/deleteAll/{id}")
+    public ResponseEntity deleteAll(@PathVariable Long id){
+        getCartService().deleteAllItemsFromCart(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -69,6 +75,10 @@ public class CartController {
         return okResponse(getCartService().getById(id));
     }
 
+    @GetMapping("/getCart/{id}")
+    public ResponseEntity<CartDTO> myCart(@PathVariable(name = "id") Long id){
+        return okResponse(getCartService().getCartFromUser(id));
+    }
 
     private ResponseEntity<List<CartDTO>> okResponse(List<Cart> src){
         return ResponseEntity.ok(src.stream().map(this::toDTO).collect(Collectors.toList()));

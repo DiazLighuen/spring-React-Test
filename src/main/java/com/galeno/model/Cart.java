@@ -26,6 +26,7 @@ public abstract class Cart {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+    private Date purchaseDate;
 
     public Cart() {
     }
@@ -36,6 +37,7 @@ public abstract class Cart {
         this.paid = false;
         this.total = 0.0;
         this.user = user;
+        this.purchaseDate = null;
     }
 
     public void addProduct(Product product){

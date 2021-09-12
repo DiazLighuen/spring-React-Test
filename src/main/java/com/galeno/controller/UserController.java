@@ -1,6 +1,7 @@
 package com.galeno.controller;
 
 import com.galeno.dto.*;
+import com.galeno.model.Cart;
 import com.galeno.model.User;
 import com.galeno.service.CartService;
 import com.galeno.service.ProductService;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("user")
 @Getter
+@CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
     private CartService cartService;

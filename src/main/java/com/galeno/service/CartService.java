@@ -6,6 +6,7 @@ import com.galeno.dto.*;
 import com.galeno.model.*;
 import com.galeno.repository.CartRepository;
 import com.galeno.utils.Helper;
+import liquibase.pro.packaged.L;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,16 @@ public class CartService {
         }
     }
 
+    public Cart getCartFromUser(Long id){
+        User user = getUserService().getById(id);
+        return user.getCart();
+    }
+
+    public  List<Cart> getCartsFromUser(Long id){
+        User user = getUserService().getById(id);
+        return user.getCarts();
+    }
+
     public void deleteFromCart(DeleteFromCartDTO deleteFromCartDTO) {
         User user = getUserService().getById(deleteFromCartDTO.getUserId());
         Product product = getProductService().getById(deleteFromCartDTO.getProductId());
@@ -69,8 +80,8 @@ public class CartService {
         }
     }
 
-    public void deleteAllItemsFromCart(CartListDTO cartListDTO) {
-        Cart cart = this.getById(cartListDTO.getId());
+    public void deleteAllItemsFromCart(Long id) {
+        Cart cart = getUserService().getById(id).getCart();
         if (cart != null) {
             if (getHelper().isToday(cart.getDate())) {
                 cart.getProducts().clear();
@@ -96,7 +107,7 @@ public class CartService {
     @Transactional
     public void deleteCart(CartListDTO cartListDTO){
         Cart cart = this.getById(cartListDTO.getId());
-        this.deleteAllItemsFromCart(cartListDTO);
+        this.deleteAllItemsFromCart(cart.getUser().getId());
         getUserService().deleteCart(cart.getUser());
         cartRepository.delete(cart);
     }
