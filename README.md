@@ -1,4 +1,4 @@
-# spring-React-Test
+# Spring-Boot + React + Ionic Challenge
 This is a test Proyect using java with Spring Boot, Spring Data in backend and React with Ionic in frontend
 
 1-Compile proyect
